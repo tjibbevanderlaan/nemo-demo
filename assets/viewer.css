@@ -1,0 +1,119 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+@font-face {
+  font-family: "PT Sans Narrow";
+  src: url('fonts/ptsans-narrow.eot');
+  src: url('fonts/ptsans-narrow.eot?#iefix') format('embedded-opentype'), url('fonts/ptsans-narrow.woff') format('woff'), url('fonts/ptsans-narrow.ttf') format('truetype'), url('fonts/ptsans-narrow.svg') format('svg');
+}
+
+body {
+    font-family: 'PT Sans Narrow', sans-serif;
+    overflow: hidden;
+    background-color: #f3f9eb;
+}
+
+body.demo iframe {
+    pointer-events: none;
+}
+
+.mobile body {
+    padding-top: 5px;
+    /* This is a hack for iOS devices to prevent displaying the addressbar in landscape mode */
+}
+
+main {
+    position: absolute;
+    top: 0px;
+    bottom: 45px;
+    width: 100%;
+}
+
+iframe {
+    height: 100%;
+    width: 100%;
+    border: 0;
+    background-color: #f3f9eb;
+}
+
+.overlay {
+    display: none;
+    background-color: #222222;
+    background-color: rgba(34, 34, 34, 0.8);
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: 10;
+    color: #FFF;
+    transition: opacity .2s ease-in-out;
+}
+
+.overlay.show {
+    opacity: 1;
+}
+
+.overlay.hide {
+    opacity: 0;
+}
+
+.overlay .content {
+    position: absolute;
+    width: 72px;
+    height: 72px;
+    left: 50%;
+    top: 50%;
+    margin-left: -36px;
+    margin-top: -36px;
+}
+
+html.mobile nav .move {
+    display: none;
+}
+
+nav {
+    font-size: 1.4em;
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    display: flex;
+    background-color: #f5f5f5;
+    text-align: center;
+    height: 45px;
+    z-index: 120;
+}
+
+nav a.disabled {
+    color: #e4e4e4;
+}
+
+nav > a.disabled:hover {
+    background-color: initial;
+}
+
+nav a:hover, nav a:visited, nav a:focus {
+    text-decoration: none;
+}
+
+nav .move {
+    font-weight: bold;
+    padding: 8px 15px;
+    flex-grow: 1;
+}
+nav > a:hover{
+    background-color: #e4e4e4;
+}
+
+nav .breadcrumb {
+    cursor: pointer;
+    flex-grow: 1;
+    color: #337ab7;
+    margin-bottom: 0px;
+}
+
+nav .breadcrumb li:first-child {
+    font-weight: bold;
+}

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pre-U Online Leeromgeving</title>
+    <link rel="stylesheet" href="/demo/assets/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimal-ui">
+    <link rel="manifest" href="/demo/assets/manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="/demo/assets/images/touch-icon-iphone.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/demo/assets/images/touch-icon-ipad.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/demo/assets/images/touch-icon-iphone-retina.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/demo/assets/images/touch-icon-ipad-retina.png">
+    <link rel="stylesheet" href="/demo/assets/style.css">
+</head>
+
+<body>
+    <main>
+        <div id="frame">
+            <img class="title" src="/demo/assets/images/title.svg" title="Pre-U Online Leeromgeving">
+            <div id="content">
+                <div id="topiclist" class="menu" style="display: none">
+                </div>
+            </div>
+        </div>
+    </main>
+    <section id="cover">
+        <img class="logo" src="/demo/assets/images/logo.svg" title="University of Twente">
+    </section>
+    <footer>
+        <div id="progress">
+            <div id="progressbar"></div>
+        </div>
+    </footer>
+</body>
+<script>
+
+function setReady() {
+    var tl = document.getElementById('topiclist');
+    tl.style.display = 'block';
+
+    document.body.classList.remove('init');
+    document.body.classList.add('load');
+
+    // set demo modus timer
+    inactivityTime();
+}
+
+function initFailed() {
+    document.body.classList.remove('init');
+    document.body.classList.add('failed');
+
+    console.log('Geen modules gevonden');
+}
+
+function inactivityTime() {
+    var t;
+    document.onmousemove = resetTimer;
+    document.onkeypress = resetTimer;
+    document.ontouchstart = resetTimer;
+
+    function startdemo() {
+        var tl = document.getElementById('topiclist');
+        var amount = tl.childNodes.length;
+        var select = getRandomInt(0, amount-1);
+
+        var obj = tl.childNodes[select];
+        var dest = obj.getAttribute('href');
+        var demodest = dest && (dest += '&d=true'); // add demo mode attr to url
+
+        if(demodest) {
+            window.location.href = demodest;
+        }
+    }
+
+    function resetTimer() {
+        clearTimeout(t);
+        t = setTimeout(startdemo, 60000);
+    }
+
+    resetTimer();
+
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+}
+
+window.addEventListener('load', function() {
+	// wait for php
+	document.body.classList.add('init');
+    var tl = document.getElementById('topiclist');
+
+    // Receive data
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4) {
+            if(xmlhttp.status == 200) {
+                tl.innerHTML = xmlhttp.responseText;
+                setReady();    
+            } else {
+                initFailed();
+            }
+        }
+    };
+    xmlhttp.open("GET", "findcontent.php", true);
+    xmlhttp.send();
+});
+</script>
+</html>
