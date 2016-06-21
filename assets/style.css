@@ -26,6 +26,10 @@ body {
     main {
         min-width: 100%;
     }
+
+    #cover .logo {
+        display: none;
+    }
 }
 
 @media screen and (orientation:landscape) {
