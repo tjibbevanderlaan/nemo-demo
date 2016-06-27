@@ -29,6 +29,7 @@ $topicproperties = unserialize(base64_decode($str_var_tp));
     <link rel="stylesheet" href="assets/viewer.css">
     <script>
     var receiver;
+    var it;
     window.onload = function() {
         var slidesize = {};
         slidesize.w = 1024;
@@ -81,7 +82,7 @@ $topicproperties = unserialize(base64_decode($str_var_tp));
         // Get the window displayed in the iframe.
         receiver = document.getElementById('theframe').contentWindow;
         var dm = new DemoMode();
-        var it = new inactivityTimer();
+        it = new inactivityTimer();
 
         // Get a reference to the previous/next button.
         var btnPrev = document.getElementById('btn_prev');
@@ -256,9 +257,13 @@ $topicproperties = unserialize(base64_decode($str_var_tp));
             document.removeEventListener('touchstart', reset);
         }
 
+        function pause() {
+            clearInterval(timer);
+        }
+
         return {
             start: start,
-            pause: clearInterval(timer),
+            pause: pause,
             abort: abort,
             reset: reset
         };

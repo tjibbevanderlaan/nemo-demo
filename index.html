@@ -37,13 +37,15 @@
     </footer>
 </body>
 <script>
-
 function setReady() {
     var tl = document.getElementById('topiclist');
     tl.style.display = 'block';
 
     document.body.classList.remove('init');
     document.body.classList.add('load');
+
+    // Remove default behaviour for links; needed to stay within webapp!
+    preventDefaultforWebApp();
 
     // set demo modus timer
     inactivityTime();
@@ -56,6 +58,16 @@ function initFailed() {
     console.log('Geen modules gevonden');
 }
 
+function preventDefaultforWebApp() {
+    var a = document.getElementsByTagName("a");
+    for (var i = 0; i < a.length; i++) {
+        a[i].onclick = function() {
+            window.location = this.getAttribute("href");
+            return false;
+        };
+    }
+}
+
 function inactivityTime() {
     var t;
     document.onmousemove = resetTimer;
@@ -65,13 +77,13 @@ function inactivityTime() {
     function startdemo() {
         var tl = document.getElementById('topiclist');
         var amount = tl.childNodes.length;
-        var select = getRandomInt(0, amount-1);
+        var select = getRandomInt(0, amount - 1);
 
         var obj = tl.childNodes[select];
         var dest = obj.getAttribute('href');
         var demodest = dest && (dest += '&d=true'); // add demo mode attr to url
 
-        if(demodest) {
+        if (demodest) {
             window.location.href = demodest;
         }
     }
@@ -89,17 +101,17 @@ function inactivityTime() {
 }
 
 window.addEventListener('load', function() {
-	// wait for php
-	document.body.classList.add('init');
+    // wait for php
+    document.body.classList.add('init');
     var tl = document.getElementById('topiclist');
 
     // Receive data
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4) {
-            if(xmlhttp.status == 200) {
+            if (xmlhttp.status == 200) {
                 tl.innerHTML = xmlhttp.responseText;
-                setReady();    
+                setReady();
             } else {
                 initFailed();
             }
@@ -109,4 +121,5 @@ window.addEventListener('load', function() {
     xmlhttp.send();
 });
 </script>
+
 </html>
